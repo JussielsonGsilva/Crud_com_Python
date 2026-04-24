@@ -1,4 +1,5 @@
 from services.database import criar_conexao, fechar_conexao
+
 import streamlit as st
 import time
 
@@ -83,3 +84,21 @@ def SelecionarTodos():
     finally:
         cursor.close()
         fechar_conexao(con)
+
+
+def excluir_cliente(id):
+    con = criar_conexao()
+    cursor = con.cursor()
+
+    sql_excluir = "DELETE FROM Cliente WHERE id = %s"
+    cursor.execute(sql_excluir, (id,))
+
+    con.commit()
+    cursor.close()
+    fechar_conexao(con)
+
+    return True
+
+
+def editar_cliente(id):
+    pass
