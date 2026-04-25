@@ -33,9 +33,9 @@ if st.session_state.form_submitted:
 
 st.sidebar.title("Menu")
 Page_cliente = st.sidebar.selectbox(
-    'Cliente', ['Cadastrar', 'Alterar', 'Excluir', 'Consultar'])
+    'Cliente', ['Cadastrar', 'Listar'])
 
-if Page_cliente == 'Consultar':
+if Page_cliente == 'Listar':
     PageListarCliente.Listar()
 
 if Page_cliente == 'Cadastrar':

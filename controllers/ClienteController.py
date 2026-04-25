@@ -1,5 +1,4 @@
 from services.database import criar_conexao, fechar_conexao
-
 import streamlit as st
 import time
 
@@ -14,10 +13,7 @@ def inserir_cliente(nome, idade, profissao):
     try:
         cursor = con.cursor(buffered=True)
 
-        # 1️⃣ Verificar se o cliente já existe
-        sql_verificar = """
-            SELECT id FROM Cliente WHERE cliNome = %s
-        """
+        sql_verificar = "SELECT id FROM Cliente WHERE cliNome = %s"
         cursor.execute(sql_verificar, (nome,))
         resultado = cursor.fetchone()
 
@@ -27,7 +23,6 @@ def inserir_cliente(nome, idade, profissao):
             msg.empty()
             return False
 
-        # 2️⃣ Inserir cliente
         sql_inserir = """
             INSERT INTO Cliente (cliNome, cliIdade, cliProfissao)
             VALUES (%s, %s, %s)
@@ -100,5 +95,42 @@ def excluir_cliente(id):
     return True
 
 
-def editar_cliente(id):
-    pass
+def SelecionarPorID(id):
+    con = criar_conexao()
+    cursor = con.cursor()
+
+    cursor.execute(
+        "SELECT id, cliNome, cliIdade, cliProfissao FROM Cliente WHERE id = %s", (id,))
+    row = cursor.fetchone()
+
+    cursor.close()
+    fechar_conexao(con)
+
+    if row:
+        return {
+            "id": row[0],
+            "nome": row[1],
+            "idade": row[2],
+            "profissao": row[3]
+        }
+    else:
+        return None
+
+
+def Atualizar(id, nome, idade, profissao):
+    con = criar_conexao()
+    cursor = con.cursor()
+
+    sql_alterar = """
+        UPDATE Cliente 
+        SET cliNome = %s, cliIdade = %s, cliProfissao = %s
+        WHERE id = %s
+    """
+    valores = (nome, idade, profissao, id)
+
+    cursor.execute(sql_alterar, valores)
+    con.commit()
+    cursor.close()
+    fechar_conexao(con)
+
+    return True
