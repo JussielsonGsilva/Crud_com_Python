@@ -19,9 +19,9 @@ def inserir_cliente(nome, idade, profissao):
 
         if resultado:
             msg = st.warning("Cliente já está cadastrado.")
-            time.sleep(3)
+            time.sleep(2)
             msg.empty()
-            return False
+            return False  # ✔️ Apenas retorna
 
         sql_inserir = """
             INSERT INTO Cliente (cliNome, cliIdade, cliProfissao)

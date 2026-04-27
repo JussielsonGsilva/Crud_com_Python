@@ -15,11 +15,15 @@ def Cadastrar():
         st.title("Alterar dados do cliente")
         botao_texto = "Salvar alterações"
     else:
-        st.title("Cadastrar cliente")
+        st.title("Cadastro de Cliente")
         botao_texto = "Cadastrar"
 
+    # Garante que a chave do formulário exista
+    if "form_key" not in st.session_state:
+        st.session_state.form_key = "form1"
+
     # Formulário
-    with st.form(key="include_cliente"):
+    with st.form(key=st.session_state.form_key):
         if ClienteRecuperado:
             # Modo alteração: carrega valores do banco
             input_name = st.text_input(
@@ -41,7 +45,7 @@ def Cadastrar():
                        "Professor(a)", "Outro"].index(ClienteRecuperado["profissao"])
             )
         else:
-            # Modo cadastro: campos vazios (controlados pelo session_state do main.py)
+            # Modo cadastro: campos vazios
             input_name = st.text_input("Insira o seu nome", key="input_name")
             input_age = st.number_input(
                 "Insira a sua idade",
@@ -63,8 +67,8 @@ def Cadastrar():
     if submit_button:
 
         # Validações
-        if not input_name.strip():
-            msg = st.warning("O nome não pode estar vazio.")
+        if not input_name.strip() or input_age <= 0 or not input_occupation:
+            msg = st.warning("Preencha todos os campos do formulário.")
             time.sleep(2)
             msg.empty()
             st.stop()
@@ -82,14 +86,35 @@ def Cadastrar():
             )
             msg = st.success("Cliente atualizado com sucesso.")
         else:
-            ClienteController.inserir_cliente(
+            resultado = ClienteController.inserir_cliente(
                 input_name, input_age, input_occupation
             )
-            msg = st.success("Cliente cadastrado com sucesso.")
-            # Sinaliza para o main.py limpar os campos após o cadastro
-            st.session_state.form_submitted = True
 
-        time.sleep(1)
+            # 🔥 Se o cliente já existe, limpar formulário e recarregar
+            if not resultado:
+
+                # Limpar campos
+                for key in ["input_name", "input_age", "input_occupation"]:
+                    if key in st.session_state:
+                        del st.session_state[key]
+
+                # Forçar recriação do formulário
+                st.session_state.form_key = f"form{time.time()}"
+
+                st.rerun()
+
+            # Cadastro bem-sucedido
+            msg = st.success("Cliente cadastrado com sucesso.")
+
+            # Limpar campos após cadastro
+            for key in ["input_name", "input_age", "input_occupation"]:
+                if key in st.session_state:
+                    del st.session_state[key]
+
+            # Forçar recriação do formulário
+            st.session_state.form_key = f"form{time.time()}"
+
+        time.sleep(2)
         msg.empty()
 
         # Limpa parâmetros da URL e recarrega
