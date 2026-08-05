@@ -1,0 +1,7 @@
+# Dependências diretas do projeto, com versões fixadas.
+# Instalar com:  pip install -r requirements.txt
+
+streamlit==1.56.0                 # interface web do CRUD
+mysql-connector-python==9.6.0     # driver de conexão com o MySQL
+python-dotenv==1.2.2              # leitura das credenciais do arquivo .env
+pandas==3.0.2                     # importado em main.py
