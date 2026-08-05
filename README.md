@@ -27,7 +27,7 @@ criar, listar, alterar e excluir. Interface em Streamlit, dados em MySQL.
 
 ## Pré-requisitos
 
-- Python 3.11 ou superior (exigência do pandas 3.x)
+- Python 3.10 ou superior
 - **MySQL instalado e em execução** (a aplicação não funciona sem ele)
 - Um usuário MySQL com permissão sobre o banco do projeto
 

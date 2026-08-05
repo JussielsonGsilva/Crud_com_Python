@@ -1,7 +1,4 @@
 import streamlit as st
-import pandas as pd
-import time
-import controllers.ClienteController as ClienteController
 import Pages.Cliente.cadastrar as PageCadastrarCliente
 import Pages.Cliente.listar as PageListarCliente
 
