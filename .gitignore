@@ -1,0 +1,24 @@
+# Credenciais — nunca versionar. O .env.example documenta o formato.
+.env
+
+# Ambiente virtual
+venv/
+.venv/
+
+# Bytecode gerado automaticamente pelo Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Configuração pessoal de editor
+.vscode/
+
+# Arquivos de backup e sobras de edição
+*.bak
+*.old
+*.orig
+*~
+
+# Metadados de sistema operacional
+.DS_Store
+Thumbs.db
